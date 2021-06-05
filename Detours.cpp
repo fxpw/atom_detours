@@ -38,7 +38,7 @@ LPVOID Patch::GetApiPointer(const char* module, const char* api)
 
 inline bool MemCmp(const byte* data, const char* sig, const char* mask)
 {
-    for (; *sig; ++data, ++sig, ++mask) {
+    for (; *mask; ++data, ++sig, ++mask) {
         if (*mask == 'x' && *data != *sig)
             return false;
     }
@@ -47,7 +47,7 @@ inline bool MemCmp(const byte* data, const char* sig, const char* mask)
 
 LPVOID Patch::FindSignature(LPVOID begin, size_t size, const char* sig, const char* mask)
 {
-    size_t len = strlen(sig) - 1;
+    size_t len = strlen(mask) - 1;
     for (DWORD i = 0; i < (size - len); i++) {
         if (MemCmp((const byte*)((uintptr_t)begin + i), sig, mask))
             return (LPVOID)((uintptr_t)begin + i);
